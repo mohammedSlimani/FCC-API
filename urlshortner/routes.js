@@ -3,7 +3,7 @@ const Router = express.Router();
 const dns = require('dns');
 const db = require('./db')
 
-const DOMAIN = 'https://smed-url.glitch.me/'
+const DOMAIN = 'https://smed-url.glitch.me/api/shorturl/'
 
 Router.post('/new', (req, res, next) => {
     let { body: { url } } = req;
@@ -39,6 +39,25 @@ Router.post('/new', (req, res, next) => {
     })
 })
 
-
+Router.get('/:shorturl', (req, res, next) => {
+    let shorturl = req.params.shorturl;
+    if (isNaN(shorturl)) res.json({ "Not found": "no url found, add it here: https://smed-url.glitch.me " })
+    try {
+        const existingUrl = db.getUrlByNum(shorturl, (err, founded) => {
+            if (err) next(err)
+            else if (founded.length) {
+                console.log('after the query I find', founded);
+                console.log("redirecting to:", founded[0].url);
+                res.redirect('https://' + founded[0].url);
+                res.end();
+            } else {
+                res.json({ "Not found": "no url found, add it here: https://smed-url.glitch.me " })
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.json({ "error": "Catched Error" });
+    }
+})
 
 module.exports = Router;
