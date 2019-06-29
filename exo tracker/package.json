@@ -1,0 +1,10 @@
+{
+  "name": "exo-tracker",
+  "version": "1.0.0",
+  "description": "Exercice Tracker",
+  "main": "server.js",
+  "repository": "https://github.com/mohammedSlimani/FCC-API.git",
+  "author": "Slimani Mohamed",
+  "license": "MIT",
+  "private": false
+}
